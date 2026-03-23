@@ -1,79 +1,81 @@
 <p align="center">
   <h1 align="center">TrainingEdge</h1>
   <p align="center">
-    自托管运动数据分析引擎 — 让训练决策有据可依
+    Self-hosted sports analytics engine — data-driven training decisions
     <br />
-    <a href="#快速开始">快速开始</a> · <a href="#功能特性">功能特性</a> · <a href="#api-参考">API 参考</a>
+    <a href="#quick-start">Quick Start</a> · <a href="#features">Features</a> · <a href="#api-reference">API Reference</a>
+    <br /><br />
+    <a href="README.zh-CN.md">中文文档</a>
   </p>
 </p>
 
-> 🤖 本项目由 [Claude Code](https://claude.ai/claude-code) 辅助开发，包括核心引擎、Web 仪表盘、部署脚本和本文档。
+> 🤖 Built with [Claude Code](https://claude.ai/claude-code) — engine, web dashboard, deployment scripts, and docs.
 
 ---
 
-## 这是什么？
+## What is this?
 
-TrainingEdge 是一个**完全自托管**的运动训练分析平台。它从 Garmin 手表同步数据，计算专业训练指标，并通过 AI 生成训练计划和骑行复盘。
+TrainingEdge is a **fully self-hosted** sports training analytics platform. It syncs data from your Garmin watch, computes professional training metrics, and uses AI to generate training plans and ride reviews.
 
-**所有数据留在你自己的机器上。** 没有云服务，没有订阅，没有第三方拿走你的训练数据。
+**Your data stays on your machine.** No cloud services, no subscriptions, no third party touching your training data.
 
-### 核心能力
+### Core Capabilities
 
-- 🔄 **Garmin 自动同步** — 活动、睡眠、HRV、静息心率、Body Battery
-- 📊 **专业指标计算** — NP / TSS / IF / CTL / ATL / TSB / PDC / eFTP / W'
-- 🤖 **AI 训练计划** — 基于你的体能状态和约束条件自动生成周计划
-- 📋 **计划执行追踪** — 自动匹配实际训练与计划（支持换天做）
-- 🏥 **每日准备度评估** — 综合 HRV、睡眠、TSB 判断今天能不能练
-- 📈 **中文 Web 仪表盘** — 深色主题，结论优先，移动端适配
+- 🔄 **Garmin Auto-Sync** — activities, sleep, HRV, resting HR, Body Battery
+- 📊 **Pro Metrics** — NP / TSS / IF / CTL / ATL / TSB / PDC / eFTP / W'
+- 🤖 **AI Training Plans** — auto-generated weekly plans based on fitness state and constraints
+- 📋 **Plan Compliance Tracking** — auto-matches actual workouts to plan (flexible scheduling)
+- 🏥 **Daily Readiness** — combines HRV, sleep, TSB to decide if you should train today
+- 📈 **Web Dashboard** — dark theme, conclusion-first design, mobile-friendly
 
-### 设计理念
+### Design Philosophy
 
-**"结论 → 证据 → 动作"** — 每个页面先告诉你该做什么，再展示为什么，最后给操作入口。
-
----
-
-## 功能特性
-
-### 仪表盘
-
-| 页面 | 内容 |
-|------|------|
-| 主面板 | 今日准备度、本周训练总览、负荷趋势图、异常警报 |
-| 活动详情 | AI 骑行复盘、功率/心率时间序列、区间分布、圈速分析 |
-| 训练计划 | AI 周计划、约束满足清单、计划 vs 实际对比 |
-| 身体数据 | 健康趋势（HRV/睡眠/心率）、体成分记录（InBody） |
-
-### 计算指标
-
-| 指标 | 说明 |
-|------|------|
-| NP / TSS / IF | 标准化功率、训练压力、强度因子 |
-| CTL / ATL / TSB | 体能 / 疲劳 / 状态平衡 |
-| PDC / eFTP / W' | 功率曲线、估算 FTP、无氧做功能力 |
-| xPower / TRIMP | 指数加权功率、心率训练冲量 |
-| HR Drift / VDOT | 心率漂移、跑步能力指数 |
+**"Conclusion → Evidence → Action"** — every page tells you what to do first, shows why, then gives you the controls.
 
 ---
 
-## 快速开始
+## Features
 
-### 环境要求
+### Dashboard
 
-- Python 3.10+ 或 Docker
-- Garmin 手表 + Garmin Connect 账号
+| Page | Content |
+|------|---------|
+| Home | Today's readiness, weekly training summary, fitness trend chart, anomaly alerts |
+| Activity Detail | AI ride review, power/HR time series, zone distribution, lap analysis |
+| Training Plan | AI weekly plan, constraint checklist, planned vs actual comparison |
+| Body Data | Health trends (HRV/sleep/HR), body composition records (InBody) |
 
-### Docker 部署
+### Metrics
+
+| Metric | Description |
+|--------|-------------|
+| NP / TSS / IF | Normalized Power, Training Stress Score, Intensity Factor |
+| CTL / ATL / TSB | Fitness / Fatigue / Form |
+| PDC / eFTP / W' | Power Duration Curve, Estimated FTP, Anaerobic Work Capacity |
+| xPower / TRIMP | Exponentially Weighted Power, Training Impulse |
+| HR Drift / VDOT | Heart Rate Drift, Running Ability Index |
+
+---
+
+## Quick Start
+
+### Requirements
+
+- Python 3.10+ or Docker
+- Garmin watch + Garmin Connect account
+
+### Docker
 
 ```bash
 git clone https://github.com/sisjune/training-edge.git
 cd training-edge
-cp .env.example .env   # 编辑填入你的参数
+cp .env.example .env   # edit with your parameters
 docker compose up -d
 ```
 
-访问 `http://localhost:8420`
+Open `http://localhost:8420`
 
-### 本地开发
+### Local Development
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
@@ -83,100 +85,100 @@ python scripts/cli.py sync --days 7
 python scripts/cli.py serve --reload --port 8420
 ```
 
-### 配置
+### Configuration
 
-复制 `.env.example` 为 `.env`，核心参数：
+Copy `.env.example` to `.env`:
 
-| 变量 | 说明 |
-|------|------|
-| `TRAININGEDGE_FTP` | 你的 FTP (W) |
-| `TRAININGEDGE_MAX_HR` | 最大心率 (bpm) |
-| `TRAININGEDGE_RESTING_HR` | 静息心率 (bpm) |
-| `TRAININGEDGE_PASSWORD` | Web 访问密码（可选） |
-| `GARMINTOKENS` | Garmin OAuth token 目录 |
-| `OPENROUTER_API_KEY` | AI 功能所需（可在 Web 设置页配置） |
+| Variable | Description |
+|----------|-------------|
+| `TRAININGEDGE_FTP` | Your FTP (watts) |
+| `TRAININGEDGE_MAX_HR` | Max heart rate (bpm) |
+| `TRAININGEDGE_RESTING_HR` | Resting heart rate (bpm) |
+| `TRAININGEDGE_PASSWORD` | Web access password (optional) |
+| `GARMINTOKENS` | Garmin OAuth token directory |
+| `OPENROUTER_API_KEY` | Required for AI features (or configure in web settings) |
 
-完整变量列表见 [.env.example](.env.example)。
+See [.env.example](.env.example) for all variables.
 
 ---
 
-## 架构
+## Architecture
 
 ```
 Garmin Watch → Garmin Connect → garminconnect API
                                        │
                                        ▼
-                              FIT 解析 (fitparse)
+                              FIT parsing (fitparse)
                                        │
                                        ▼
-                             指标计算 (engine/metrics.py)
+                            Metrics engine (engine/metrics.py)
                                        │
                                        ▼
                              SQLite (/data/training_edge.db)
                                        │
                           ┌────────────┼────────────┐
                           ▼            ▼            ▼
-                     REST API    AI 计划生成    Web 仪表盘
+                     REST API    AI plan gen    Web dashboard
                      (FastAPI)   (OpenRouter)   (Jinja2)
 ```
 
-### 技术栈
+### Tech Stack
 
 Python 3.13 · FastAPI · SQLite (WAL) · Jinja2 · Chart.js · fitparse · garminconnect · Docker
 
 ---
 
-## API 参考
+## API Reference
 
-### 活动
+### Activities
 
-| 端点 | 方法 | 说明 |
-|------|------|------|
-| `/api/activities` | GET | 活动列表 |
-| `/api/activity/{id}` | GET | 活动详情（含计算指标） |
-| `/api/activities/{id}/ai-review` | GET | AI 活动复盘 |
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/activities` | GET | List activities |
+| `/api/activity/{id}` | GET | Activity detail with computed metrics |
+| `/api/activities/{id}/ai-review` | GET | AI activity review |
 
-### 体能与健康
+### Fitness & Health
 
-| 端点 | 方法 | 说明 |
-|------|------|------|
-| `/api/fitness` | GET | CTL/ATL/TSB 历史 |
-| `/api/pdc` | GET | 功率持续时间曲线 |
-| `/api/wellness` | GET | HRV/睡眠/静息心率 |
-| `/api/decision-summary` | GET | 今日准备度 |
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/fitness` | GET | CTL/ATL/TSB history |
+| `/api/pdc` | GET | Power Duration Curve |
+| `/api/wellness` | GET | HRV / sleep / resting HR |
+| `/api/decision-summary` | GET | Today's readiness assessment |
 
-### 训练计划
+### Training Plan
 
-| 端点 | 方法 | 说明 |
-|------|------|------|
-| `/api/plan/generate` | POST | AI 生成周训练计划 |
-| `/api/plan/workouts` | GET | 当前计划训练列表 |
-| `/api/constraint-status` | GET | 约束满足情况 |
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/plan/generate` | POST | Generate AI weekly plan |
+| `/api/plan/workouts` | GET | Current plan workouts |
+| `/api/constraint-status` | GET | Constraint compliance |
 
-### 同步与设置
+### Sync & Settings
 
-| 端点 | 方法 | 说明 |
-|------|------|------|
-| `/api/sync` | POST | 触发 Garmin 数据同步 |
-| `/api/settings` | GET/POST | 读取/更新设置 |
-| `/api/health` | GET | 健康检查 |
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/sync` | POST | Trigger Garmin data sync |
+| `/api/settings` | GET/POST | Read/update settings |
+| `/api/health` | GET | Health check |
 
 ---
 
-## 项目结构
+## Project Structure
 
 ```
 training-edge/
-├── engine/              # 核心计算引擎
-│   ├── metrics.py       # NP/TSS/IF/CTL/ATL/TSB/PDC 计算
-│   ├── database.py      # SQLite 数据层
-│   ├── sync.py          # Garmin 数据同步
-│   ├── readiness.py     # 每日准备度评估
-│   ├── plan_generator.py # AI 训练计划生成
-│   └── fit_parser.py    # FIT 文件解析
-├── api/app.py           # FastAPI 应用
-├── web/templates/       # Jinja2 中文页面模板
-├── scripts/cli.py       # CLI 工具
+├── engine/              # Core analytics engine
+│   ├── metrics.py       # NP/TSS/IF/CTL/ATL/TSB/PDC computation
+│   ├── database.py      # SQLite data layer
+│   ├── sync.py          # Garmin data sync
+│   ├── readiness.py     # Daily readiness assessment
+│   ├── plan_generator.py # AI training plan generation
+│   └── fit_parser.py    # FIT file parsing
+├── api/app.py           # FastAPI application
+├── web/templates/       # Jinja2 page templates
+├── scripts/cli.py       # CLI tool
 ├── Dockerfile
 ├── docker-compose.yml
 └── .env.example
