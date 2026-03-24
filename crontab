@@ -1,0 +1,10 @@
+# TrainingEdge Cron Jobs
+# Runs daily at 7:00 AM to sync Oura + Intervals data
+
+# Daily sync at 7:00 AM
+0 9 * * * root cd /app && /usr/local/bin/python -c "from engine import sync_intervals; sync_intervals.sync_all(days_activities=7, days_wellness=14)" >> /var/log/trainingedge/sync.log 2>&1
+
+# Weekly full sync on Sundays at 6:00 AM (30 days back)
+0 6 * * 0 root cd /app && /usr/local/bin/python -c "from engine import sync_intervals; sync_intervals.sync_all(days_activities=30, days_wellness=30)" >> /var/log/trainingedge/sync_weekly.log 2>&1
+
+# Empty line required at end of crontab

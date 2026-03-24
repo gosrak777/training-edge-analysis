@@ -133,12 +133,14 @@ def init_db(db_path: Path = DB_PATH):
             ramp_rate       REAL,
             sleep_hours     REAL,
             sleep_score     REAL,
-            readiness       REAL,
-            resting_hr      INTEGER,
-            hrv             REAL,
+            readiness       REAL,                    -- Oura readinessScore
+            resting_hr      INTEGER,                 -- Oura restingHR
+            hrv             REAL,                    -- Oura hrv_rmssd
+            body_temp_deviation REAL,                -- Oura body_temp_deviation
             steps           INTEGER,
             weight_kg       REAL,
             notes           TEXT,
+            source          TEXT DEFAULT 'intervals.icu',
             updated_at      TEXT DEFAULT (datetime('now'))
         );
 
@@ -390,7 +392,8 @@ def upsert_wellness(conn: sqlite3.Connection, data: Dict[str, Any]):
     keys = [k for k in data.keys() if k in (
         "date", "ctl", "atl", "tsb", "ramp_rate",
         "sleep_hours", "sleep_score", "readiness",
-        "resting_hr", "hrv", "steps", "weight_kg", "notes",
+        "resting_hr", "hrv", "body_temp_deviation",
+        "steps", "weight_kg", "notes", "source",
     )]
     placeholders = ", ".join(["?"] * len(keys))
     updates = ", ".join([f"{k}=excluded.{k}" for k in keys if k != "date"])

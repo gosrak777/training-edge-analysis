@@ -1,94 +1,71 @@
 # =============================================================================
-# TrainingEdge Configuration — Intervals.icu Edition
+# TrainingEdge — NAS Docker Deployment Configuration
 # =============================================================================
 # 
-# This configuration replaces Garmin Connect with Intervals.icu as the
-# primary data source. Oura Ring data is automatically included via Intervals.
-#
-# REQUIRED: Set these environment variables before running the application.
+# 1. Copy this file to .env
+# 2. Fill in your API keys
+# 3. Adjust paths for your NAS
+# 4. Run: docker-compose up -d
 # =============================================================================
 
 
 # ═════════════════════════════════════════════════════════════════════════════
-# INTERVALS.ICU API CONFIGURATION (REQUIRED)
+# REQUIRED: Intervals.icu API Configuration
 # ═════════════════════════════════════════════════════════════════════════════
 
-# Your Intervals.icu API key
-# Get it from: https://intervals.icu/settings (Developer section)
+# Your Intervals.icu API key (from https://intervals.icu/settings)
 INTERVALS_API_KEY=your_api_key_here
 
-# Your Intervals.icu Athlete ID
-# Usually "0" for your own account, or a specific athlete ID if managing others
+# Your Intervals.icu Athlete ID (usually "0" for your own account)
 INTERVALS_ATHLETE_ID=0
 
-# Base URL for Intervals.icu API (change this for self-hosted instances)
+# Base URL (only change if self-hosting Intervals)
 INTERVALS_API_BASE=https://intervals.icu/api/v1
 
 
 # ═════════════════════════════════════════════════════════════════════════════
-# PATH CONFIGURATION (NAS-Compatible)
+# NAS Path Configuration
 # ═════════════════════════════════════════════════════════════════════════════
 
-# Base directory for the application
-# Default: project root directory
-# TRAININGEDGE_BASE_DIR=/path/to/training-edge
+# Host path for wellness data (database, cache)
+# Synology example: /volume1/docker/trainingedge/state
+# QNAP example: /share/Container/trainingedge/state
+WELLNESS_DATA_PATH=./state
 
-# Reports output directory — mount your NAS here
-# Example for NAS: /mnt/nas/training-reports
-# Example for local: ./reports
-REPORTS_DIR=./reports
-
-# State directory (database, cache files)
-# Default: ./state
-# TRAININGEDGE_STATE_DIR=./state
-
-# Database file path
-# Default: {STATE_DIR}/training_edge.db
-# TRAININGEDGE_DB_PATH=./state/training_edge.db
+# Host path for reports output
+# Synology example: /volume1/reports/trainingedge
+# QNAP example: /share/reports/trainingedge
+REPORTS_HOST_PATH=./reports
 
 
 # ═════════════════════════════════════════════════════════════════════════════
-# WEB APPLICATION SETTINGS
+# Web Application Settings
 # ═════════════════════════════════════════════════════════════════════════════
 
-# Access password for web dashboard (optional but recommended for public access)
-# Leave empty to disable password protection (local/dev mode only)
-TRAININGEDGE_PASSWORD=
+# Access password for web dashboard (recommended for NAS)
+TRAININGEDGE_PASSWORD=your_secure_password
 
-# Session secret (auto-generated if not set)
-# TRAININGEDGE_SESSION_SECRET=your_random_secret_here
+# Session secret (auto-generated if empty)
+# TRAININGEDGE_SESSION_SECRET=$(openssl rand -hex 32)
 
 
 # ═════════════════════════════════════════════════════════════════════════════
-# AI / LLM SETTINGS (for training plan generation)
+# Sync Settings
 # ═════════════════════════════════════════════════════════════════════════════
 
-# OpenAI API key (for AI training plans)
+# Auto-sync interval in hours (0 to disable)
+TRAININGEDGE_SYNC_INTERVAL_HOURS=6
+
+# Run mode:
+# - web: Web server only
+# - cron: Web server + daily cron sync at 7 AM (RECOMMENDED)
+# - sync: One-time sync then exit
+MODE=cron
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# Optional: LLM for AI Training Plans
+# ═════════════════════════════════════════════════════════════════════════════
+
 # OPENAI_API_KEY=sk-...
-
-# Or use other LLM providers
-# ANTHROPIC_API_KEY=...
-# DEEPSEEK_API_KEY=...
-
-
-# ═════════════════════════════════════════════════════════════════════════════
-# DEPRECATED / REMOVED SETTINGS
-# ═════════════════════════════════════════════════════════════════════════════
-
-# The following Garmin-specific settings are no longer used:
-# - GARMINTOKENS (Garmin session tokens)
-# - TRAININGEDGE_FIT_DIR (FIT file storage)
-#
-# All data now comes from Intervals.icu REST API.
-
-
-# ═════════════════════════════════════════════════════════════════════════════
-# EXAMPLE: Full NAS Setup
-# ═════════════════════════════════════════════════════════════════════════════
-#
-# INTERVALS_API_KEY=abc123xyz
-# INTERVALS_ATHLETE_ID=0
-# REPORTS_DIR=/mnt/nas/sports/training-reports
-# TRAININGEDGE_STATE_DIR=/mnt/nas/sports/training-edge-state
-# TRAININGEDGE_PASSWORD=your_secure_password
-# OPENAI_API_KEY=sk-...
+# Or other LLM providers...

@@ -182,7 +182,7 @@ def startup():
 async def login_page(request: Request, next: str = "/", error: str = ""):
     if not _ACCESS_PASSWORD:
         return RedirectResponse("/")
-    return templates.TemplateResponse(request, "login.html", {
+    return templates.TemplateResponse("login.html", request, {
         "request": request, "next": next, "error": error,
     })
 
@@ -710,7 +710,7 @@ def dashboard(request: Request):
     # Get Oura morning health report
     oura_health = oura_report.generate_morning_health_summary()
 
-    return templates.TemplateResponse(request, "dashboard.html", {
+    return templates.TemplateResponse("dashboard.html", request, {
         "request": request,
         "activities": activities,
         "fitness": fitness,
@@ -754,7 +754,7 @@ def activity_detail(request: Request, activity_id: int):
     laps = json.loads(activity["laps_json"]) if activity.get("laps_json") else []
     validation = json.loads(activity["validation_json"]) if activity.get("validation_json") else None
 
-    return templates.TemplateResponse(request, "activity.html", {
+    return templates.TemplateResponse("activity.html", request, {
         "request": request,
         "activity": activity,
         "records": records,
@@ -899,7 +899,7 @@ def plan_page(request: Request, week: Optional[str] = None):
         deviation = compute_weekly_deviation(conn_inner, ref_date=week_start.isoformat())
         readiness = compute_readiness(conn_inner)
 
-    return templates.TemplateResponse(request, "plan.html", {
+    return templates.TemplateResponse("plan.html", request, {
         "request": request,
         "week_start": week_start.isoformat(),
         "week_end": week_end.isoformat(),
@@ -1274,7 +1274,7 @@ def body_data_page(request: Request):
         body_comparisons = get_body_comp_comparisons(conn)
         metric_cards = get_metric_comparisons(conn)
 
-    return templates.TemplateResponse(request, "body_data.html", {
+    return templates.TemplateResponse("body_data.html", request, {
         "request": request,
         "latest": latest,
         "previous": previous,
@@ -1330,7 +1330,7 @@ def settings_page(request: Request):
                     settings["llm_api_key_set"] = True
                 else:
                     settings[key] = val
-    return templates.TemplateResponse(request, "settings.html", {
+    return templates.TemplateResponse("settings.html", request, {
         "request": request,
         "settings": settings,
     })
